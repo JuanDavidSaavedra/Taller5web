@@ -4,7 +4,35 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script>
 
+$(document).ready(function() {
+    // Realizar la solicitud AJAX para obtener los datos del JSON
+    $.ajax({
+        url: 'https://jsonplaceholder.typicode.com/users',
+        dataType: 'json',
+        success: function(data) {
+            // Recorrer los datos y mostrarlos en la grilla
+            $.each(data, function(index, item) {
+                $('#dataTable tbody').append('<tr>' +
+                    '<td>' + item.id + '</td>' +
+                    '<td>' + item.name + '</td>' +
+                    '<td>' + item.username + '</td>' +
+                    '<td>' + item.email + '</td>' +
+                    '<td>' + item.phone + '</td>' +
+                    '<td>' + item.website + '</td>' +
+                    '<td>' + item.company.name + '</td>' +
+                    '</tr>');
+                    });
+                }
+            });
 
+            // Agregar funcionalidad de filtrado
+            $('#searchInput').on('keyup', function() {
+                var value = $(this).val().toLowerCase();
+                $('#dataTable tbody tr').filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+});
 
     </script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css">
@@ -14,8 +42,28 @@
     <title>Document</title>
 </head>
 <body>
-
-
-
+    <section class="section">
+        <input type="button" onclick="location.href='integrantes.html'" value="ir a integrantes" class="button is-link">
+        <input type="button" onclick="location.href='index.html'" value="ir a menu" class="button is-link">
+    </section>
+    <h1 class="title is-1 has-text-centered">Grillas en JQuery</h1>
+    <div class="box">
+        <input type="text" id="searchInput" placeholder="Buscar...">
+        <br>
+        <table id="dataTable" class="table is-bordered is-fullwidth">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Website</th>
+                    <th>Company</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
 </body>
 </html>
